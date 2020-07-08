@@ -25,7 +25,7 @@ public class ConsistentHash {
     /**
      * 虚拟节点个数
      */
-    private static final int VIRTUAL_NODE_COUNT = 100;
+    private static final int VIRTUAL_NODE_COUNT = 5000;
 
     /**
      * 添加节点
@@ -88,7 +88,6 @@ public class ConsistentHash {
         hash += hash << 3;
         hash ^= hash >> 17;
         hash += hash << 5;
-
         return Math.abs(hash);
     }
 
