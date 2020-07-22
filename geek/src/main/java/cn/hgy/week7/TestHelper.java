@@ -48,21 +48,21 @@ public class TestHelper {
 
         while (count > 0) {
             threadPoolExecutor.submit(() -> {
-                long begin = System.currentTimeMillis();
-                HttpClient client = HttpClientBuilder.create().build();
-                HttpGet get = new HttpGet(url);
-                HttpResponse response = null;
                 try {
-                    response = client.execute(get);
+                    long begin = System.currentTimeMillis();
+                    HttpClient client = HttpClientBuilder.create().build();
+                    HttpGet get = new HttpGet(url);
+                    HttpResponse response = client.execute(get);
+                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        result.addResponse(Long.valueOf(System.currentTimeMillis() - begin).intValue());
+                    } else {
+                        result.addResponse(-1);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    countDownLatch.countDown();
                 }
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    result.addResponse(Long.valueOf(System.currentTimeMillis() - begin).intValue());
-                } else {
-                    result.addResponse(-1);
-                }
-                countDownLatch.countDown();
             });
             count--;
         }
