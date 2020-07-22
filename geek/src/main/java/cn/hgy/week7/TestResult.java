@@ -12,11 +12,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TestResult {
 
     private String url;
-    private List<Long> responseTimeList = new CopyOnWriteArrayList<>();
-    private Long avgResponseTime;
-    private Long _95ResponseTime;
+    private List<Integer> responseTimeList = new CopyOnWriteArrayList<>();
+    private Integer avgResponseTime;
+    private Integer _95ResponseTime;
 
-    public void addResponse(Long responseTime) {
+    public void addResponse(Integer responseTime) {
         responseTimeList.add(responseTime);
     }
 
@@ -28,43 +28,43 @@ public class TestResult {
         this.url = url;
     }
 
-    public List<Long> getResponseTimeList() {
+    public List<Integer> getResponseTimeList() {
         return responseTimeList;
     }
 
-    public void setResponseTimeList(List<Long> responseTimeList) {
+    public void setResponseTimeList(List<Integer> responseTimeList) {
         this.responseTimeList = responseTimeList;
     }
 
-    public Long getAvgResponseTime() {
-        long sum = 0;
+    public Integer getAvgResponseTime() {
+        int sum = 0;
         int count = 0;
-        for (Long l : responseTimeList) {
+        for (Integer l : responseTimeList) {
             sum += (l < 0 ? 0 : l.intValue());
             count += (l < 0 ? 0 : 1);
         }
         return sum / count;
     }
 
-    public void setAvgResponseTime(Long avgResponseTime) {
+    public void setAvgResponseTime(Integer avgResponseTime) {
         this.avgResponseTime = avgResponseTime;
     }
 
-    public Long get_95ResponseTime() {
+    public Integer get_95ResponseTime() {
         int index = Double.valueOf(responseTimeList.size() * 0.95).intValue();
         return responseTimeList.get(index);
     }
 
-    public void set_95ResponseTime(Long _95ResponseTime) {
+    public void set_95ResponseTime(Integer _95ResponseTime) {
         this._95ResponseTime = _95ResponseTime;
     }
 
     @Override
     public String toString() {
-        return "TestResult{" +
-                "url='" + url + '\'' +
-                ", avgResponseTime=" + getAvgResponseTime() +
-                ", _95ResponseTime=" + get_95ResponseTime() +
-                '}';
+        return "测试地址：url=" + url + ", 总次数=" + responseTimeList.size() + ", 失败次数=" +
+                responseTimeList.stream().filter(l -> {
+                    return l == -1;
+                }).count() + ", 平均响应时间=" + getAvgResponseTime() +
+                ", 95%响应时间=" + get_95ResponseTime();
     }
 }

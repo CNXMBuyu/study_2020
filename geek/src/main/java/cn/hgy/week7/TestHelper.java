@@ -58,9 +58,9 @@ public class TestHelper {
                     e.printStackTrace();
                 }
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    result.addResponse(System.currentTimeMillis() - begin);
+                    result.addResponse(Long.valueOf(System.currentTimeMillis() - begin).intValue());
                 } else {
-                    result.addResponse(-1L);
+                    result.addResponse(-1);
                 }
                 countDownLatch.countDown();
             });
