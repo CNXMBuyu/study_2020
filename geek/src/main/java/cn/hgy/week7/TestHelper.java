@@ -8,13 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -47,12 +41,11 @@ public class TestHelper {
         int count = totalRequestCount;
 
         while (count > 0) {
+            HttpClient client = HttpClientBuilder.create().build();
             threadPoolExecutor.submit(() -> {
                 try {
                     long begin = System.currentTimeMillis();
-                    HttpClient client = HttpClientBuilder.create().build();
-                    HttpGet get = new HttpGet(url);
-                    HttpResponse response = client.execute(get);
+                    HttpResponse response = client.execute(new HttpGet(url));
                     if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                         result.addResponse(Long.valueOf(System.currentTimeMillis() - begin).intValue());
                     } else {
