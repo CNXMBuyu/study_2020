@@ -2,6 +2,7 @@ package cn.hgy.week7;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * 测试结果类
@@ -51,8 +52,9 @@ public class TestResult {
     }
 
     public Integer get_95ResponseTime() {
-        int index = Double.valueOf(responseTimeList.size() * 0.95).intValue();
-        return responseTimeList.get(index);
+        List<Integer> list = responseTimeList.stream().sorted().collect(Collectors.toList());
+        int index = Double.valueOf(list.size() * 0.95).intValue();
+        return list.get(index);
     }
 
     public void set_95ResponseTime(Integer _95ResponseTime) {
