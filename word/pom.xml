@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <apache.poi.version>4.1.1</apache.poi.version>
+        <apache.poi.version>5.2.1</apache.poi.version>
     </properties>
 
     <artifactId>word</artifactId>
